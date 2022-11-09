@@ -14,5 +14,10 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         $this->call(EntrustSeeder::class);
+        $this->call(ProductCategorySeeder::class);
+        $this->call(TagSeeder::class);
+        $this->call(ProductSeeder::class);
+        $this->call(ProductsTagsSeeder::class);
+        $this->call(ProductsImagesSeeder::class);
     }
 }
