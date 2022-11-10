@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
+use App\Models\ProductCategory;
 use Illuminate\Http\Request;
 
 class ProductCategoriesController extends Controller
@@ -14,7 +15,16 @@ class ProductCategoriesController extends Controller
      */
     public function index()
     {
-        return view('backend.product_categories.index');
+        $categories = ProductCategory::withCount('products')
+            ->when(\request()->keyword != null, function ($query) {
+                $query->search(\request()->keyword);
+            })
+            ->when(\request()->status != null, function ($query) {
+                $query->whereStatus(\request()->status);
+            })
+            ->orderBy(\request()->sort_by ?? 'id', \request()->order_by ?? 'desc')
+            ->paginate(\request()->limit_by ?? 10);
+        return view('backend.product_categories.index', compact('categories'));
     }
 
     /**

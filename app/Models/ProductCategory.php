@@ -5,19 +5,16 @@ namespace App\Models;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Nicolaslopezj\Searchable\SearchableTrait;
 
 class ProductCategory extends Model
 {
-    use HasFactory;
-    use Sluggable;
+    use HasFactory, Sluggable, SearchableTrait;
+
 
     protected $guarded = [];
 
-    /**
-     * Return the sluggable configuration array for this model.
-     *
-     * @return array
-     */
+
     public function sluggable(): array
     {
         return [
@@ -53,7 +50,7 @@ class ProductCategory extends Model
         return $this->hasMany(ProductCategory::class, 'parent_id', 'id')->where('status', true);
     }
 
-    public static function tree( $level = 1 )
+    public static function tree($level = 1)
     {
         return static::with(implode('.', array_fill(0, $level, 'children')))
             ->whereNull('parent_id')
