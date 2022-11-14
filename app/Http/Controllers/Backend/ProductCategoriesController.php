@@ -15,6 +15,10 @@ class ProductCategoriesController extends Controller
 
     public function index()
     {
+        if (!auth()->user()->ability('admin', 'manage_product_categories, show_product_categories')) {
+            return redirect('admin/index');
+        }
+
         $categories = ProductCategory::withCount('products')
             ->when(\request()->keyword != null, function ($query) {
                 $query->search(\request()->keyword);
@@ -30,6 +34,9 @@ class ProductCategoriesController extends Controller
 
     public function create()
     {
+        if (!auth()->user()->ability('admin', 'create_product_categories')) {
+            return redirect('admin/index');
+        }
         $main_categories = ProductCategory::whereNull('parent_id')->get(['id', 'name']);
 
         return view('backend.product_categories.create', compact('main_categories'));
@@ -39,9 +46,14 @@ class ProductCategoriesController extends Controller
 
     public function store(ProductCategoryRequest $request)
     {
+        if (!auth()->user()->ability('admin', 'create_product_categories')) {
+            return redirect('admin/index');
+        }
+
         $input['name'] = $request->name;
         $input['status'] = $request->status;
         $input['parent_id'] = $request->parent_id;
+
 
         if ($image = $request->file('cover')) {
             $file_name = Str::slug($request->name) . "." . $image->getClientOriginalExtension();
@@ -67,6 +79,9 @@ class ProductCategoriesController extends Controller
 
     public function show($id)
     {
+        if (!auth()->user()->ability('admin', 'display_product_categories')) {
+            return redirect('admin/index');
+        }
         return view('backend.product_categories.show');
 
     }
@@ -119,9 +134,10 @@ class ProductCategoriesController extends Controller
             return redirect('admin/index');
         }
 
-        if (File::exists('assets/product_categories/' . $productCategory->cover)) {
-            unlink('assets/product_categories/' . $productCategory->cover);
-        }
+        if (!empty($productCategory->cover))
+            if (File::exists('assets/product_categories/' . $productCategory->cover)) {
+                unlink('assets/product_categories/' . $productCategory->cover);
+            }
         $productCategory->delete();
 
         toastr()->error('Deleted successfully!');
