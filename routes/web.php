@@ -40,6 +40,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
         Route::resource('product_categories', ProductCategoriesController::class);
         Route::post('/product_categories/remove-image', [ProductCategoriesController::class, 'remove_image'])->name('product_categories.remove_image');
         Route::resource('products', ProdcutController::class);
+        Route::post('/products/remove-image', [ProdcutController::class, 'remove_image'])->name('products.remove_image');
         Route::resource('tags', TagController::class);
 
     });

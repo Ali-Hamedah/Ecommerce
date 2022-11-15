@@ -15,7 +15,7 @@ class TagController extends Controller
             return redirect('admin/index');
         }
 
-        $tags = Tag::withCount('products')
+        $tags = Tag::with('products')
             ->when(\request()->keyword != null, function ($query) {
                 $query->search(\request()->keyword);
             })
@@ -24,6 +24,7 @@ class TagController extends Controller
             })
             ->orderBy(\request()->sort_by ?? 'id', \request()->order_by ?? 'desc')
             ->paginate(\request()->limit_by ?? 10);
+
         return view('backend.tags.index', compact('tags'));
     }
 
