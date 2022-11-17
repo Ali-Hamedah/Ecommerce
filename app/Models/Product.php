@@ -6,10 +6,11 @@ use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
+use Nicolaslopezj\Searchable\SearchableTrait;
 
 class Product extends Model
 {
-    use HasFactory, Sluggable;
+    use HasFactory, Sluggable, SearchableTrait;
 
     protected $guarded = [];
 
@@ -21,6 +22,12 @@ class Product extends Model
             ]
         ];
     }
+
+    protected $searchable = [
+        'columns' => [
+            'products.name' => 10,
+        ]
+    ];
 
     public function status()
     {
@@ -41,6 +48,7 @@ class Product extends Model
     {
         return $this->morphToMany(Tag::class, 'taggable');
     }
+
 
     public function firstMedia(): MorphOne
     {

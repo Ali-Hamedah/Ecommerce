@@ -18,14 +18,16 @@
         </div>
         <div class="card-body">
 
-            <form action="{{ route('admin.products.update', $product->id) }}" method="post" enctype="multipart/form-data">
+            <form action="{{ route('admin.products.update', $product->id) }}" method="post"
+                  enctype="multipart/form-data">
                 @csrf
                 @method('PATCH')
                 <div class="row">
                     <div class="col-6">
                         <div class="form-group">
                             <label for="name">Name</label>
-                            <input type="text" name="name" value="{{ old('name', $product->name) }}" class="form-control">
+                            <input type="text" name="name" value="{{ old('name', $product->name) }}"
+                                   class="form-control">
                             @error('name')<span class="text-danger">{{ $message }}</span>@enderror
                         </div>
                     </div>
@@ -34,7 +36,8 @@
                         <select name="product_category_id" class="form-control">
                             <option value="">---</option>
                             @forelse($categories as $category)
-                                <option value="{{ $category->id }}" {{ old('product_category_id', $product->product_category_id) == $category->id ? 'selected' : null }}>{{ $category->name }}</option>
+                                <option
+                                    value="{{ $category->id }}" {{ old('product_category_id', $product->product_category_id) == $category->id ? 'selected' : null }}>{{ $category->name }}</option>
                             @empty
                             @endforelse
                         </select>
@@ -44,8 +47,10 @@
                     <div class="col-3">
                         <label for="status">Status</label>
                         <select name="status" class="form-control">
-                            <option value="1" {{ old('status', $product->status) == 1 ? 'selected' : null }}>Active</option>
-                            <option value="0" {{ old('status', $product->status) == 0 ? 'selected' : null }}>Inactive</option>
+                            <option value="1" {{ old('status', $product->status) == 1 ? 'selected' : null }}>Active
+                            </option>
+                            <option value="0" {{ old('status', $product->status) == 0 ? 'selected' : null }}>Inactive
+                            </option>
                         </select>
                         @error('status')<span class="text-danger">{{ $message }}</span>@enderror
                     </div>
@@ -63,19 +68,23 @@
                 <div class="row">
                     <div class="col-4">
                         <label for="quantity">Quantity</label>
-                        <input type="text" name="quantity" value="{{ old('quantity', $product->quantity) }}" class="form-control">
+                        <input type="text" name="quantity" value="{{ old('quantity', $product->quantity) }}"
+                               class="form-control">
                         @error('quantity')<span class="text-danger">{{ $message }}</span>@enderror
                     </div>
                     <div class="col-4">
                         <label for="price">Price</label>
-                        <input type="text" name="price" value="{{ old('price', $product->price) }}" class="form-control">
+                        <input type="text" name="price" value="{{ old('price', $product->price) }}"
+                               class="form-control">
                         @error('price')<span class="text-danger">{{ $message }}</span>@enderror
                     </div>
                     <div class="col-4">
                         <label for="featured">Featured</label>
                         <select name="featured" class="form-control">
-                            <option value="1" {{ old('featured', $product->featured) == 1 ? 'selected' : null }}>Yes</option>
-                            <option value="0" {{ old('featured', $product->featured) == 0 ? 'selected' : null }}>No</option>
+                            <option value="1" {{ old('featured', $product->featured) == 1 ? 'selected' : null }}>Yes
+                            </option>
+                            <option value="0" {{ old('featured', $product->featured) == 0 ? 'selected' : null }}>No
+                            </option>
                         </select>
                         @error('featured')<span class="text-danger">{{ $message }}</span>@enderror
                     </div>
@@ -86,7 +95,8 @@
                         <label for="tags">tags</label>
                         <select name="tags" class="form-control select2" multiple="multiple">
                             @forelse($tags as $tag)
-                                <option value="{{ $tag->id }}" {{ in_array($tag->id, $product->tags->pluck('id')->toArray()) ? 'selected' : null }}>{{ $tag->name }}</option>
+                                <option
+                                    value="{{ $tag->id }}" {{ in_array($tag->id, $product->tags->pluck('id')->toArray()) ? 'selected' : null }}>{{ $tag->name }}</option>
                             @empty
                             @endforelse
                         </select>
@@ -98,7 +108,8 @@
                         <label for="images">Images</label>
                         <br>
                         <div class="file-loading">
-                            <input type="file" name="images[]" id="product-images" class="file-input-overview" multiple="multiple">
+                            <input type="file" name="images[]" id="product-images" class="file-input-overview"
+                                   multiple="multiple">
                             @error('images')<span class="text-danger">{{ $message }}</span>@enderror
                         </div>
                     </div>
@@ -115,7 +126,7 @@
 @section('script')
     <script src="{{ asset('backend/vendor/select2/js/select2.full.min.js') }}"></script>
     <script>
-        $(function(){
+        $(function () {
             function matchStart(params, data) {
                 // If there are no search terms, return all of the data
                 if ($.trim(params.term) === '') {
@@ -182,23 +193,23 @@
                 initialPreview: [
                     @if($product->media()->count() > 0)
                         @foreach($product->media as $media)
-                            "{{ asset('assets/products/' . $media->file_name) }}",
-                        @endforeach
+                        "{{ asset('assets/products/' . $media->file_name) }}",
+                    @endforeach
                     @endif
                 ],
                 initialPreviewAsData: true,
                 initialPreviewFileType: 'image',
                 initialPreviewConfig: [
-                    @if($product->media()->count() > 0)
+                        @if($product->media()->count() > 0)
                         @foreach($product->media as $media)
-                            {
-                                caption: "{{ $media->file_name }}",
-                                size: '{{ $media->file_size }}',
-                                width: "120px",
-                                url: "{{ route('admin.products.remove_image', ['image_id' => $media->id, 'product_id' => $product->id, '_token' => csrf_token()]) }}",
-                                key: {{ $media->id }}
-                            },
-                        @endforeach
+                    {
+                        caption: "{{ $media->file_name }}",
+                        size: '{{ $media->file_size }}',
+                        width: "120px",
+                        url: "{{ route('admin.products.remove_image', ['image_id' => $media->id, 'product_id' => $product->id, '_token' => csrf_token()]) }}",
+                        key: {{ $media->id }}
+                    },
+                    @endforeach
                     @endif
                 ]
             }).on('filesorted', function (event, params) {
