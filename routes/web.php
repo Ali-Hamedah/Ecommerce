@@ -4,6 +4,7 @@ use App\Http\Controllers\Backend\BackendController;
 use App\Http\Controllers\Backend\ProdcutController;
 use App\Http\Controllers\Backend\ProductCategoriesController;
 use App\Http\Controllers\Backend\ProductCouponController;
+use App\Http\Controllers\Backend\ProductReviewController;
 use App\Http\Controllers\Backend\TagController;
 use App\Http\Controllers\Frontend\FrontendController;
 use Illuminate\Support\Facades\Route;
@@ -44,7 +45,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
         Route::post('/products/remove-image', [ProdcutController::class, 'remove_image'])->name('products.remove_image');
         Route::resource('tags', TagController::class);
         Route::resource('product_coupons', ProductCouponController::class);
-        Route::resource('product_reviews', Backend\ProductReviewController::class);
+        Route::resource('product_reviews', ProductReviewController::class);
 
     });
 });
