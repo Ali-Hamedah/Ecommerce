@@ -9,6 +9,7 @@ use App\Http\Controllers\Backend\ProdcutController;
 use App\Http\Controllers\Backend\ProductCategoriesController;
 use App\Http\Controllers\Backend\ProductCouponController;
 use App\Http\Controllers\Backend\ProductReviewController;
+use App\Http\Controllers\Backend\ShippingCompanyController;
 use App\Http\Controllers\Backend\StateController;
 use App\Http\Controllers\Backend\SupervisorController;
 use App\Http\Controllers\Backend\TagController;
@@ -44,7 +45,9 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
     Route::group(['middleware' => ['roles', 'role:admin|supervisor']], function () {
         Route::get('/', [BackendController::class, 'index'])->name('index_route');
         Route::get('/index', [BackendController::class, 'index'])->name('index');
-
+        Route::get('/account_settings', [BackendController::class, 'account_settings'])->name('account_settings');
+        Route::post('/admin/remove-image', [BackendController::class, 'remove_image'])->name('remove_image');
+        Route::patch('/account_settings', [BackendController::class, 'update_account_settings'])->name('update_account_settings');
         Route::resource('product_categories', ProductCategoriesController::class);
         Route::post('/product_categories/remove-image', [ProductCategoriesController::class, 'remove_image'])->name('product_categories.remove_image');
         Route::resource('products', ProdcutController::class);
@@ -63,6 +66,8 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
         Route::resource('states', StateController::class);
         Route::get('cities/get_cities', [CityController::class, 'get_cities'])->name('cities.get_cities');
         Route::resource('cities', CityController::class);
+        Route::resource('shipping_companies', ShippingCompanyController::class);
+        Route::resource('payment_methods', PaymentMethodController::class);
 
 
     });

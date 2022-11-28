@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class WorldSeeder extends Seeder
 {
@@ -13,6 +14,7 @@ class WorldSeeder extends Seeder
      */
     public function run()
     {
+        DB::unprepared(file_get_contents(public_path('ecommerce_world.sql')));
         $sql_file = public_path('ecommerce_world.sql');
         $db = [
             'host' => '127.0.0.1',
