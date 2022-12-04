@@ -55,11 +55,8 @@ class BackendController extends Controller
             }
 
             auth()->user()->update($data);
-
-            return redirect()->route('admin.account_settings')->with([
-                'message' => 'Updated successfully',
-                'alert-type' => 'success'
-            ]);
+            toastr()->success('Data has been saved successfully!');
+            return redirect()->route('admin.account_settings');
 
         }
     }

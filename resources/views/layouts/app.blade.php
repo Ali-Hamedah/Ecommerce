@@ -38,6 +38,8 @@
     <link rel="stylesheet" href="{{ asset('frontend/vendor/swiper/swiper-bundle.min.css') }}">
     <link rel="stylesheet" href="{{ asset('frontend/css/style.default.css') }}" id="theme-stylesheet">
     <link rel="stylesheet" href="{{ asset('frontend/css/custom.css') }}">
+    <livewire:styles/>
+    @yield('style')
 
 </head>
 <body>
@@ -68,6 +70,8 @@
 <script src="{{ asset('frontend/vendor/swiper/swiper-bundle.min.js')}}"></script>
 <script src="{{ asset('frontend/vendor/choices.js/public/assets/scripts/choices.min.js')}}"></script>
 <script src="{{ asset('frontend/js/front.js')}}"></script>
+<livewire:scripts/>
+@yield('script')
 <script>
     // ------------------------------------------------------- //
     //   Inject SVG Sprite -

@@ -16,7 +16,7 @@
                         <a class="nav-link" href="{{route('frontend.shop')}}">Shop</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{route('frontend.detail')}}">Product detail</a>
+                        <a class="nav-link" href="{{route('frontend.product')}}">Product detail</a>
                     </li>
                     <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" id="pagesDropdown" href="#"
                                                      data-bs-toggle="dropdown" aria-haspopup="true"
@@ -26,12 +26,12 @@
                             <a
                                 class="dropdown-item border-0 transition-link" href="{{route('frontend.shop')}}">Category</a>
                             <a
-                                class="dropdown-item border-0 transition-link" href="{{route('frontend.detail')}}">Product
+                                class="dropdown-item border-0 transition-link" href="{{route('frontend.product')}}">Product
                                 detail</a>
                             <a class="dropdown-item border-0 transition-link"
                                href="{{route('frontend.cart')}}">Shopping
                                 cart</a><a class="dropdown-item border-0 transition-link"
-                                           href="{{route('frontend.checkout')}}">Checkout</a>
+                                           href="#">Checkout</a>
                         </div>
                     </li>
                 </ul>
@@ -72,7 +72,7 @@
                 </ul>
             </div>
         </nav>
-       
+
     </div>
 
     </div>
