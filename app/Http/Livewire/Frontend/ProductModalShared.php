@@ -4,10 +4,13 @@ namespace App\Http\Livewire\Frontend;
 
 use App\Models\Product;
 use Gloudemans\Shoppingcart\Facades\Cart;
+use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Component;
 
 class ProductModalShared extends Component
 {
+    use LivewireAlert;
+
     public $productModalCount = false;
     public $productModal = [];
     public $quantity = 1;
@@ -28,6 +31,14 @@ class ProductModalShared extends Component
         } else {
             $this->alert('warning', 'This is maximum quantity you can add!');
         }
+    }
+
+
+    public function showProductModalAction($slug)
+    {
+        $this->productModalCount = true;
+        $this->productModal = Product::withAvg('reviews', 'rating')->whereSlug($slug)->Active()->HasQuantity()->ActiveCategory()->firstOrFail();
+        //dd($this->productModal);
     }
 
     public function addToCart()
@@ -59,15 +70,9 @@ class ProductModalShared extends Component
         }
     }
 
-    public function showProductModalAction($slug)
-    {
-        $this->productModalCount = true;
-        $this->productModal = Product::withAvg('reviews', 'rating')->whereSlug($slug)->Active()->HasQuantity()->ActiveCategory()->firstOrFail();
-        // dd($this->productModal);
-    }
-
     public function render()
     {
         return view('livewire.frontend.product-modal-shared');
     }
+
 }

@@ -43,18 +43,19 @@
 
 </head>
 <body>
-<div id="app" class="page-holder {{request()->routeIs('frontend.detail') ? 'bg-light' : null}}">
+<div id="app" class="page-holder {{ request()->routeIs('frontend.detail') ? ' bg-light' : null }}">
+    <!-- navbar-->
     @include('partial.frontend.header')
 
     <div class="container">
         @yield('content')
     </div>
+
+    @include('partial.frontend.footer')
 </div>
 
-@include('partial.frontend.footer')
 
-@include('partial.frontend.modal')
-
+<livewire:frontend.product-modal-shared/>
 
 
 <!-- Scripts -->
@@ -71,6 +72,8 @@
 <script src="{{ asset('frontend/vendor/choices.js/public/assets/scripts/choices.min.js')}}"></script>
 <script src="{{ asset('frontend/js/front.js')}}"></script>
 <livewire:scripts/>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<x-livewire-alert::scripts/>
 @yield('script')
 <script>
     // ------------------------------------------------------- //
