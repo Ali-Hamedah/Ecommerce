@@ -4,12 +4,19 @@ namespace App\Http\Livewire\Frontend;
 
 use App\Models\Product;
 use Gloudemans\Shoppingcart\Facades\Cart;
-use Livewire\Component;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
+use Livewire\Component;
 
-class FeaturedProduct extends Component
+class RelatedProductsComponent extends Component
 {
     use LivewireAlert;
+    public $relatedProducts;
+
+    public function mount($relatedProducts)
+    {
+        $this->relatedProducts = $relatedProducts;
+    }
+
     public function addToCart($id)
     {
         $product = Product::whereId($id)->Active()->HasQuantity()->ActiveCategory()->firstOrFail();
@@ -40,12 +47,9 @@ class FeaturedProduct extends Component
         }
     }
 
+
     public function render()
     {
-        return view('livewire.frontend.featured-product', [
-            'featuredProducts' => Product::with('firstMedia')
-                ->inRandomOrder()->Featured()->Active()->HasQuantity()->ActiveCategory()
-                ->take(8)->get()
-        ]);
+        return view('livewire.frontend.related-products-component');
     }
 }

@@ -3,13 +3,22 @@
 namespace App\Http\Livewire\Frontend;
 
 use App\Models\Product;
+use App\Models\ProductCategory;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Livewire\Component;
+use Livewire\WithPagination;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 
-class FeaturedProduct extends Component
+
+class ShopProductsTagComponent extends Component
 {
     use LivewireAlert;
+    use WithPagination;
+    protected $paginationTheme = 'bootstrap';
+    public $paginationLimit = 12;
+    public $slug;
+    public $sortingBy = 'default';
+
     public function addToCart($id)
     {
         $product = Product::whereId($id)->Active()->HasQuantity()->ActiveCategory()->firstOrFail();
@@ -42,10 +51,41 @@ class FeaturedProduct extends Component
 
     public function render()
     {
-        return view('livewire.frontend.featured-product', [
-            'featuredProducts' => Product::with('firstMedia')
-                ->inRandomOrder()->Featured()->Active()->HasQuantity()->ActiveCategory()
-                ->take(8)->get()
+        switch ($this->sortingBy) {
+            case 'popularity':
+                $sort_field = 'id';
+                $sort_type = 'asc';
+                break;
+            case 'low-high':
+                $sort_field = 'price';
+                $sort_type = 'asc';
+                break;
+            case 'high-low':
+                $sort_field = 'price';
+                $sort_type = 'desc';
+                break;
+            default:
+                $sort_field = 'id';
+                $sort_type = 'asc';
+        }
+
+        $products = Product::with('firstMedia');
+
+        $products = $products->with('tags')->whereHas('tags', function ($query) {
+            $query->where([
+                'slug' => $this->slug,
+                'status' => true,
+            ]);
+        });
+
+        $products = $products->Active()
+            ->HasQuantity()
+            ->orderBy($sort_field, $sort_type)
+            ->paginate($this->paginationLimit);
+
+        return view('livewire.frontend.shop-products-tag-component', [
+            'products' => $products
         ]);
     }
+
 }

@@ -34,6 +34,24 @@ Route::get('/product/{slug?}', [FrontendController::class, 'product'])->name('fr
 Route::get('/cart', [FrontendController::class, 'cart'])->name('frontend.cart');
 Route::get('/wishlist', [FrontendController::class, 'wishlist'])->name('frontend.wishlist');
 
+Route::group(['middleware' => ['roles', 'role:customer']], function () {
+    Route::get('/dashboard', [Frontend\CustomerController::class, 'dashboard'])->name('customer.dashboard');
+    Route::get('/profile', [Frontend\CustomerController::class, 'profile'])->name('customer.profile');
+    Route::patch('/profile', [Frontend\CustomerController::class, 'update_profile'])->name('customer.update_profile');
+    Route::get('/profile/remove-image', [Frontend\CustomerController::class, 'remove_profile_image'])->name('customer.remove_profile_image');
+    Route::get('/addresses', [Frontend\CustomerController::class, 'addresses'])->name('customer.addresses');
+
+    Route::get('/orders', [Frontend\CustomerController::class, 'orders'])->name('customer.orders');
+
+    Route::group(['middleware' => 'check_cart'], function () {
+        Route::get('/checkout', [Frontend\PaymentController::class, 'checkout'])->name('frontend.checkout');
+        Route::post('/checkout/payment', [Frontend\PaymentController::class, 'checkout_now'])->name('checkout.payment');
+        Route::get('/checkout/{order_id}/cancelled', [Frontend\PaymentController::class, 'cancelled'])->name('checkout.cancel');
+        Route::get('/checkout/{order_id}/completed', [Frontend\PaymentController::class, 'completed'])->name('checkout.complete');
+        Route::get('/checkout/webhook/{order?}/{env?}', [Frontend\PaymentController::class, 'webhook'])->name('checkout.webhook.ipn');
+    });
+
+});
 
 Auth::routes(['verify' => true]);
 
