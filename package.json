@@ -21,6 +21,7 @@
         "sass-loader": "^11.0.1"
     },
     "dependencies": {
+        "alpinejs": "^2.8.2",
         "toastr": "^2.1.4"
     }
 }

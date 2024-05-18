@@ -1,20 +1,21 @@
 <?php
 
-use App\Http\Controllers\Backend\BackendController;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Backend\TagController;
 use App\Http\Controllers\Backend\CityController;
+use App\Http\Controllers\Backend\StateController;
+use App\Http\Controllers\Backend\BackendController;
 use App\Http\Controllers\Backend\CountryController;
-use App\Http\Controllers\Backend\CustomerAddressController;
-use App\Http\Controllers\Backend\CustomerController;
 use App\Http\Controllers\Backend\ProdcutController;
-use App\Http\Controllers\Backend\ProductCategoriesController;
+use App\Http\Controllers\Backend\CustomerController;
+use App\Http\Controllers\Frontend\FrontendController;
+use App\Http\Controllers\Backend\SupervisorController;
 use App\Http\Controllers\Backend\ProductCouponController;
 use App\Http\Controllers\Backend\ProductReviewController;
+use App\Http\Controllers\Backend\CustomerAddressController;
 use App\Http\Controllers\Backend\ShippingCompanyController;
-use App\Http\Controllers\Backend\StateController;
-use App\Http\Controllers\Backend\SupervisorController;
-use App\Http\Controllers\Backend\TagController;
-use App\Http\Controllers\Frontend\FrontendController;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Backend\ProductCategoriesController;
 
 /*
 |--------------------------------------------------------------------------
@@ -35,6 +36,7 @@ Route::get('/cart', [FrontendController::class, 'cart'])->name('frontend.cart');
 Route::get('/wishlist', [FrontendController::class, 'wishlist'])->name('frontend.wishlist');
 
 Route::group(['middleware' => ['roles', 'role:customer']], function () {
+    Route::get('/checkout', [FrontendController::class, 'checkout'])->name('frontend.checkout');
     Route::get('/dashboard', [Frontend\CustomerController::class, 'dashboard'])->name('customer.dashboard');
     Route::get('/profile', [Frontend\CustomerController::class, 'profile'])->name('customer.profile');
     Route::patch('/profile', [Frontend\CustomerController::class, 'update_profile'])->name('customer.update_profile');
@@ -44,7 +46,7 @@ Route::group(['middleware' => ['roles', 'role:customer']], function () {
     Route::get('/orders', [Frontend\CustomerController::class, 'orders'])->name('customer.orders');
 
     Route::group(['middleware' => 'check_cart'], function () {
-        Route::get('/checkout', [Frontend\PaymentController::class, 'checkout'])->name('frontend.checkout');
+       // Route::get('/checkout', [Frontend\PaymentController::class, 'checkout'])->name('frontend.checkout');
         Route::post('/checkout/payment', [Frontend\PaymentController::class, 'checkout_now'])->name('checkout.payment');
         Route::get('/checkout/{order_id}/cancelled', [Frontend\PaymentController::class, 'cancelled'])->name('checkout.cancel');
         Route::get('/checkout/{order_id}/completed', [Frontend\PaymentController::class, 'completed'])->name('checkout.complete');

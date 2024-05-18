@@ -46,9 +46,9 @@
                             </a>
                         </li>
                     @else
-                        <li class="nav-item dropdown">
+                        {{-- <li class="nav-item dropdown">
                             <livewire:frontend.header.notification-component />
-                        </li>
+                        </li> --}}
 
                         <li class="nav-item dropdown">
                             <a href="#" class="nav-link dropdown-toggle" id="authDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
